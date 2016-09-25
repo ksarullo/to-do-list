@@ -1,4 +1,4 @@
-package hello;
+package todolist;
 
 public class Users {
 	
@@ -20,7 +20,7 @@ public class Users {
     	return pass;
     }
     
-    public boolean getEmail() {
+    public String getEmail() {
     	return email;
     }
 }

@@ -1,4 +1,4 @@
-package hello;
+package todolist;
 
 public class Lists {
 
