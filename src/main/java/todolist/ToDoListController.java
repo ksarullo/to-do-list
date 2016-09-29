@@ -59,6 +59,56 @@ public class ToDoListController {
     	return users.get(id);
     }
     
-    //Can't do PUT or DELETE until we have database.
+    //PUT Requests
+    
+    @RequestMapping(value="/List/{listId}", method=RequestMethod.PUT)
+    public Lists updateList(String name) {
+    	//listId.setName = name;
+    	//return list;
+    	return null;
+    }
+    
+    @RequestMapping(value="/List/{listId}/Task/{taskId}", method=RequestMethod.PUT)
+    public Tasks updateTaskDesc(String desc) {
+    	//listId.taskId.setDesc = desc;
+    	//return task;
+    	return null;
+    }
+    
+    @RequestMapping(value="/User/{userId}", method=RequestMethod.PUT) 
+    public Users updateProfile(String name, String pass, String email) {
+    	//if(name != null) userId.setName = name;
+    	//if(pass != null) userId.setPass = pass;
+    	//if(email != null) userId.setEmail = email;
+    	//return user;
+    	return null;
+    }
+    
+    @RequestMapping(value="/List/{listId}/Task/{taskId}/Status", method=RequestMethod.PUT)
+    public Tasks updateTaskStatus(boolean status) {
+    	//listId.taskId.status = status;
+    	//return task
+    	return null;
+    }
+    
+    //DELETE Requests
+    
+    @RequestMapping(value="/List/{listId}/Task/{taskId}", method=RequestMethod.DELETE)
+    public String deleteTask() {
+    	//listId.taskId DELETE
+    	return "Task Deleted";
+    }
+    
+    @RequestMapping(value="/User/{userId}", method=RequestMethod.DELETE)
+    public String deleteUser() {
+    	//userId DELETE
+    	return "User Deleted";
+    }
+    
+    @RequestMapping(value="/List/{listId}", method=RequestMethod.DELETE)
+    public String deleteList() {
+    	//listId DELETE
+    	return "List Deleted";
+    }
     
 }
