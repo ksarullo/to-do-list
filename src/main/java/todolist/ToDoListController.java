@@ -1,12 +1,7 @@
 package todolist;
 
 import java.util.ArrayList;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ToDoListController {
@@ -15,26 +10,27 @@ public class ToDoListController {
 	private static ArrayList<Users> users = new ArrayList<Users>();
 	private static ArrayList<Tasks> tasks = new ArrayList<Tasks>();
     
-   @RequestMapping(value="/User", method=RequestMethod.POST)
-    public Users createUser(@RequestParam("name") String name, @RequestParam("pass") String pass, @RequestParam("email") String email) {
-    	Users tempUser = new Users(name, pass, email);
-    	users.add(tempUser);
-    	return tempUser;
+	//POST Requests
+	
+    @RequestMapping(value="/User", method=RequestMethod.POST)
+    public @ResponseBody Users createUser(@RequestBody Users user) {
+    	users.add(user);
+    	return user;
     }
     
     @RequestMapping(value="/List", method=RequestMethod.POST)
-    public Lists createList(@RequestParam("name") String name) {
-    	Lists tempList = new Lists(name);
-    	lists.add(tempList);
-    	return tempList;
+    public @ResponseBody Lists createList(@RequestBody Lists list) {
+    	lists.add(list);
+    	return list;
     }
     
     @RequestMapping(value="/List/{listId}", method=RequestMethod.POST)
-    public Tasks createTask(@RequestParam("name") String name, @RequestParam("desc") String desc) {
-    	Tasks tempTask = new Tasks(name, desc, false);
-    	tasks.add(tempTask);
-    	return tempTask;
+    public @ResponseBody Tasks createTask(@RequestBody Tasks task) {
+    	tasks.add(task);
+    	return task;
     }
+    
+    //GET Requests
 	
     @RequestMapping(value="/User", method=RequestMethod.GET)
     public ArrayList<Users> getUsers() {
@@ -60,8 +56,7 @@ public class ToDoListController {
     
     @RequestMapping(value="/User/{userId}", method=RequestMethod.GET)
     public Users getUserProfile(@PathVariable("userId") int id) {
-    	//Use userId to grab that user profile
-    	return null;
+    	return users.get(id);
     }
     
     //Can't do PUT or DELETE until we have database.
