@@ -1,113 +1,120 @@
 package todolist;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ToDoListController {
 	
-	private static ArrayList<Lists> lists = new ArrayList<Lists>();
-	private static ArrayList<Users> users = new ArrayList<Users>();
-	private static ArrayList<Tasks> tasks = new ArrayList<Tasks>();
-    
+	DBConnect db = new DBConnect();
+	
 	//POST Requests
 	
     @RequestMapping(value="/User", method=RequestMethod.POST)
-    public @ResponseBody Users createUser(@RequestBody Users user) {
-    	users.add(user);
+    public @ResponseBody Users createUser(@RequestBody Users user) throws SQLException {
+    	String query = "INSERT INTO user VALUE (NULL, '" + user.getName() + "', '" + user.getPass() + "', '" + user.getEmail() + "')";
+    	db.getMyStatement().executeUpdate(query);
     	return user;
     }
     
     @RequestMapping(value="/List", method=RequestMethod.POST)
-    public @ResponseBody Lists createList(@RequestBody Lists list) {
-    	lists.add(list);
+    public @ResponseBody Lists createList(@RequestBody Lists list) throws SQLException {
+    	String query = "INSERT INTO user VALUE (NULL, '" + list.getName() + "')";
+    	db.getMyStatement().executeUpdate(query);
     	return list;
     }
     
     @RequestMapping(value="/List/{listId}", method=RequestMethod.POST)
-    public @ResponseBody Tasks createTask(@RequestBody Tasks task) {
-    	tasks.add(task);
+    public @ResponseBody Tasks createTask(@RequestBody Tasks task) throws SQLException {
+    	String query = "INSERT INTO user VALUE (NULL, '" + task.getName() + "', '" + task.getDesc() + "', '" + task.getStatus() + "')";
+    	db.getMyStatement().executeUpdate(query);
     	return task;
     }
     
     //GET Requests
 	
     @RequestMapping(value="/User", method=RequestMethod.GET)
-    public ArrayList<Users> getUsers() {
+    public ResultSet getUsers() throws SQLException {
+    	String query = "SELECT * FROM user";
+    	ResultSet users = db.getMyStatement().executeQuery(query);
     	return users;
     }
     
     @RequestMapping(value="/List", method=RequestMethod.GET)
-    public ArrayList<Lists> getLists() {
+    public ResultSet getLists() throws SQLException {
+    	String query = "SELECT * FROM list";
+    	ResultSet lists = db.getMyStatement().executeQuery(query);
     	return lists;
     }
     
     @RequestMapping(value="/List/{listId}", method=RequestMethod.GET)
-    public ArrayList<Tasks> getTasks(@PathVariable("listId") int id) {
-    	//Use listId to grab all Tasks under that List
-    	return null;
+    public ResultSet getTasks(@PathVariable("listId") int id) throws SQLException {
+    	String query = "SELECT * FROM task WHERE listId=" + id;
+    	ResultSet tasks = db.getMyStatement().executeQuery(query);
+    	return tasks;
     }
     
     @RequestMapping(value="/User/{userId}/List", method=RequestMethod.GET)
-    public ArrayList<Lists> getListsPerUser(@PathVariable("userId") int id) {
-    	//Use userId to grab all Lists under that userId
-    	return null;
+    public ResultSet getListsPerUser(@PathVariable("userId") int id) throws SQLException {
+    	String query = "SELECT * FROM list WHERE userId=" + id;
+    	ResultSet users = db.getMyStatement().executeQuery(query);
+    	return users;
     }
     
     @RequestMapping(value="/User/{userId}", method=RequestMethod.GET)
-    public Users getUserProfile(@PathVariable("userId") int id) {
-    	return users.get(id);
+    public ResultSet getUserProfile(@PathVariable("userId") int id) throws SQLException {
+    	String query = "SELECT * FROM user WHERE userId=" + id;
+    	ResultSet users = db.getMyStatement().executeQuery(query);
+    	return users;
     }
     
     //PUT Requests
     
     @RequestMapping(value="/List/{listId}", method=RequestMethod.PUT)
-    public Lists updateList(String name) {
+    public Lists updateList(String name) throws SQLException {
     	//listId.setName = name;
     	//return list;
     	return null;
     }
     
     @RequestMapping(value="/List/{listId}/Task/{taskId}", method=RequestMethod.PUT)
-    public Tasks updateTaskDesc(String desc) {
-    	//listId.taskId.setDesc = desc;
-    	//return task;
-    	return null;
+    public @ResponseBody Tasks updateTaskDesc(@RequestBody Tasks task) throws SQLException {
+    	if(task.getName() != null) {} //listId.taskId.setName(name);
+    	if(task.getDesc() != null) {} //listId.taskId.setDesc(desc);
+    	if(task.getStatus()) {} //listId.taskId.setStatus(status);
+		return task;
     }
     
     @RequestMapping(value="/User/{userId}", method=RequestMethod.PUT) 
-    public Users updateProfile(String name, String pass, String email) {
-    	//if(name != null) userId.setName = name;
-    	//if(pass != null) userId.setPass = pass;
-    	//if(email != null) userId.setEmail = email;
-    	//return user;
-    	return null;
-    }
-    
-    @RequestMapping(value="/List/{listId}/Task/{taskId}/Status", method=RequestMethod.PUT)
-    public Tasks updateTaskStatus(boolean status) {
-    	//listId.taskId.status = status;
-    	//return task
-    	return null;
+    public @ResponseBody Users updateProfile(@RequestBody Users user) throws SQLException {
+    	if(user.getName() != null) {} //userId.setName(name);
+    	if(user.getPass() != null) {} //userId.setPass(pass);
+    	if(user.getEmail() != null) {} // userId.setEmail(email);
+		return user;
     }
     
     //DELETE Requests
     
     @RequestMapping(value="/List/{listId}/Task/{taskId}", method=RequestMethod.DELETE)
-    public String deleteTask() {
-    	//listId.taskId DELETE
+    public String deleteTask(int taskId) throws SQLException {
+    	String query = "DELETE FROM task WHERE task_unique_id=" + taskId;
+    	db.getMyStatement().executeUpdate(query);
     	return "Task Deleted";
     }
     
     @RequestMapping(value="/User/{userId}", method=RequestMethod.DELETE)
-    public String deleteUser() {
-    	//userId DELETE
+    public String deleteUser(int userId) throws SQLException {
+    	String query = "DELETE FROM user WHERE user_unique_id=" + userId;
+    	db.getMyStatement().executeUpdate(query);
     	return "User Deleted";
     }
     
     @RequestMapping(value="/List/{listId}", method=RequestMethod.DELETE)
-    public String deleteList() {
-    	//listId DELETE
+    public String deleteList(int listId) throws SQLException {
+    	String query = "DELETE FROM list WHERE list_unique_id=" + listId;
+    	db.getMyStatement().executeUpdate(query);
     	return "List Deleted";
     }
     
