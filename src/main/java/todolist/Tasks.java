@@ -4,18 +4,21 @@ public class Tasks {
 	
 	private String name;
 	private String desc;
-	private boolean status;
+	private int status;
+	private int listId;
 	
 	public Tasks() {
 		name = "Task1";
 		desc = "Description";
-		status = false;
+		status = -1;
+		listId = -1;
 	}
 
-    public Tasks(String name, String desc, boolean status) {
+    public Tasks(String name, String desc, int status, int listId) {
         this.name = name;
         this.desc = desc;
         this.status = status;
+        this.listId = listId;
     }
     
     public void setName(String name) {
@@ -34,11 +37,19 @@ public class Tasks {
     	return desc;
     }
     
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
     	this.status = status;
     }
     
-    public boolean getStatus() {
+    public int getStatus() {
     	return status;
+    }
+    
+    public void setListId(int listId) {
+    	this.listId = listId;
+    }
+    
+    public int getListId() {
+    	return listId;
     }
 }
